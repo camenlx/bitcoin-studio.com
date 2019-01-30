@@ -1,7 +1,39 @@
 import * as React from 'react'
+import {Document, Page, pdfjs} from 'react-pdf'
 
 class Resources extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      numPages: null,
+      pageNumber: 1,
+    }
+
+    pdfjs.GlobalWorkerOptions.workerSrc=`//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
+    // This binding is necessary to make `this` work in the callback
+    //this.activateLasers = this.activateLasers.bind(this)
+  }
+
+  onDocumentLoadSuccess = (document) => {
+    const { numPages } = document;
+    this.setState({
+      numPages,
+      pageNumber: 1,
+    });
+  };
+
+  changePage = offset => this.setState(prevState => ({
+    pageNumber: prevState.pageNumber + offset,
+  }));
+
+  previousPage = () => this.changePage(-1);
+
+  nextPage = () => this.changePage(1);
+
   render() {
+    const { numPages, pageNumber } = this.state;
+
     return (
       <div id="resourcesPage">
         <div className={'hero'} id={'hero-resourcesPage'}>
@@ -108,6 +140,45 @@ class Resources extends React.Component {
             <div className="slideButton">
               <a>DOWNLOAD</a>
             </div>
+          </div>
+
+
+          <object className={'slideItem'} type={'application/pdf'}
+                  data="workshopSlides/Next_challenges_of_Bitcoin_S_Roche.pdf"></object>
+
+          {/*<Document
+            file="workshopSlides/Next_challenges_of_Bitcoin_S_Roche.pdf"
+            onLoadSuccess={this.onDocumentLoadSuccess}
+          >
+            <Page pageNumber={1} />
+            <Page pageNumber={2} />
+            <Page pageNumber={3} />
+          </Document>*/}
+
+          <Document
+            file={"workshopSlides/Next_challenges_of_Bitcoin_S_Roche.pdf"}
+            onLoadSuccess={this.onDocumentLoadSuccess}
+          >
+            <Page pageNumber={pageNumber} />
+          </Document>
+          <div>
+            <p>
+              Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
+            </p>
+            <button
+              type="button"
+              disabled={pageNumber <= 1}
+              onClick={this.previousPage}
+            >
+              Previous
+            </button>
+            <button
+              type="button"
+              disabled={pageNumber >= numPages}
+              onClick={this.nextPage}
+            >
+              Next
+            </button>
           </div>
 
           <div className={'slideItemContainer2 extraItem'}>

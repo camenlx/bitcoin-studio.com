@@ -4,7 +4,8 @@
   "private": true,
   "devDependencies": {
     "fuse-box-react-scripts": "^3.0.80",
-    "fuse-box-react-scripts-ts": "^3.0.80"
+    "fuse-box-react-scripts-ts": "^3.0.80",
+    "prop-types": "^15.6.2"
   },
   "dependencies": {
     "express": "^4.16.4",
@@ -12,7 +13,8 @@
     "merge": ">=1.2.1",
     "normalize.css": "^8.0.1",
     "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "react-dom": "^16.6.3",
+    "react-pdf": "^4.0.2"
   },
   "scripts": {
     "start": "fuse-box-react-scripts start",
